@@ -8,14 +8,14 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class CalculateViewController: UIViewController {
 
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var weightLabel: UILabel!
     @IBOutlet weak var weightSlider: UISlider!
     @IBOutlet weak var heightSlider: UISlider!
     
-    var bmiBrain = BMIBrain(height: 1.9, weight: 80)
+    var bmiBrain = BMIBrain(height: 1.5, weight: 100)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,5 +45,28 @@ class ViewController: UIViewController {
         updateUI()
     }
     
+    @IBAction func onCalculateButton(_ sender: UIButton) {
+        print(bmiBrain.getBMI())
+
+        performSegue(withIdentifier: "goToResults", sender: self)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        switch segue.identifier {
+        case "goToResults":
+            prepareResultViewController(segue.destination as! ResultViewController)
+            break
+        case .none:
+            break
+        case .some(_):
+            break
+        }
+
+    }
+
+    private func prepareResultViewController(_ destination: ResultViewController) {
+        destination.bmi = bmiBrain.getBMI()
+    }
 }
 
